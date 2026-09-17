@@ -1,20 +1,27 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
+import { fileURLToPath } from "url";
 import { Groq } from "groq-sdk";
 import { buscarDadosEscola } from "./supabase-database.js";
 
-// Em Vercel, o diretório de execução (cwd) é a raiz do projeto
-const __dirname = path.join(path.resolve(), "dist");
+const __filename =
+    fileURLToPath(import.meta.url);
 
-dotenv.config({ path: path.join(path.resolve(), ".env") });
+const __dirname =
+    path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, "..", ".env") });
+
+if (!process.env.GROQ_API_KEY && !process.env.GROK_API_KEY) {
+    dotenv.config({ path: path.join(__dirname, ".env") });
+}
 
 const app = express();
 
 const apiKey = process.env.GROQ_API_KEY?.trim() || process.env.GROK_API_KEY?.trim();
 const groqModel = process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-120b";
-// Para não quebrar o Vercel logo na inicialização (Erro 500) se a chave não estiver configurada
-const groq = new Groq({ apiKey: apiKey || "chave_nao_configurada" });
+const groq = new Groq({ apiKey });
 const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY?.trim();
 const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID?.trim() || "EXAVITQu4vr4xnSDxMaL";
 
