@@ -1,0 +1,19 @@
+body{
+    margin:0;
+    background:black;
+    overflow:hidden;
+}
+
+canvas{
+    width:100vw;
+    height:100vh;
+}
+
+#status{
+    position:absolute;
+    top:20px;
+    left:20px;
+    color:#00ff00;
+    font-size:25px;
+    font-family:Arial;
+}

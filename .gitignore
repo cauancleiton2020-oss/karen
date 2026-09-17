@@ -1,0 +1,11 @@
+# Segredos e configuracoes locais
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencias e arquivos locais do banco
+node_modules/
+data/
