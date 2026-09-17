@@ -234,11 +234,12 @@ app.post("/api/voice", async (req, res) => {
 const PORT =
     process.env.PORT || 3000;
 
+if (process.env.NODE_ENV !== "production") {
+    app.listen(PORT, () => {
+        console.log(
+            `Karen rodando em http://localhost:${PORT}`
+        );
+    });
+}
 
-app.listen(PORT, () => {
-
-    console.log(
-        `Karen rodando em http://localhost:${PORT}`
-    );
-
-});
+export default app;
