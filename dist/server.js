@@ -13,13 +13,16 @@ const app = express();
 
 const apiKey = process.env.GROQ_API_KEY?.trim() || process.env.GROK_API_KEY?.trim();
 const groqModel = process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-120b";
-// Para não quebrar o Vercel logo na inicialização (Erro 500) se a chave não estiver configurada
-const groq = new Groq({ apiKey: apiKey || "chave_nao_configurada" });
+const groq = new Groq({ apiKey: apiKey || "chave_vazia_para_nao_quebrar_servidor" });
 const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY?.trim();
 const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID?.trim() || "EXAVITQu4vr4xnSDxMaL";
 
 function getGrokErrorMessage(erro) {
     const message = erro?.error?.message || erro?.message || "";
+
+    if (!apiKey) {
+        return "A API KEY não foi configurada na Vercel! Vá no painel do projeto na Vercel -> Settings -> Environment Variables e adicione GROQ_API_KEY.";
+    }
 
     if (erro?.status === 429 || message.includes("credits") || message.includes("quota") || message.includes("rate limit")) {
         return "A Groq está sem créditos disponíveis ou excedeu o limite de requisições.";
